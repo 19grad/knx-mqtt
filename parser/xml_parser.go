@@ -9,6 +9,8 @@ import (
 
 	"github.com/pakerfeldt/knx-mqtt/models"
 	"github.com/rs/zerolog/log"
+
+	"strings"
 )
 
 var regexpDpt = regexp.MustCompile(`DPST-(\d+)-(\d+)`)
@@ -41,7 +43,7 @@ func ParseGroupAddressExport(filePath string) (*models.KNX, error) {
 				}
 				knxItems.AddGroupAddress(models.GroupAddress{
 					Name:      address.Name,
-					FullName:  fmt.Sprintf("%s/%s/%s", main.Name, middle.Name, address.Name),
+					FullName:  fmt.Sprintf("%s/%s/%s", main.Name, middle.Name, strings.ReplaceAll(address.Name, "/", "_")),
 					Address:   address.Address,
 					Datapoint: convertDptFormat(address.DPTs),
 				})
